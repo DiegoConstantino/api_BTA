@@ -1,98 +1,118 @@
-import model from '../models';
+import model from "../models";
 
 export default {
-    agregar: async(req, res, next)=>{
-        try{
-            const {nombre_animal, total_ganado, raza_ganado, rango1, rango2, rango3}=req.body;
-
-            const personas= new model.Persona({
-                nombre_animal,
-                total_ganado,
-                raza_ganado, 
-                rango1,
-                rango2,
-                rango3
-            });
-
-            const registro = await personas.save();
-            res.status(200).json(registro);
-            console.log(req.body);
-        }catch(e){
-            res.status(500).send({
-                message: "Ocurrio un error al guardar los datos"
-            });
-
-            next(e);
-        }
-    },
-
-    consultar: async(req,res, next)=>{
+  agregar: async (req, res, next) => {
     try {
-        const personas= await model.Persona.find();
-        console.log(personas);
-        res.json(personas);
-    } catch (error) {
-        res.status(500).send({
-            message: "Ocurrio un error al consultar"
-        });
+      const {
+        nombre_animal,
+        raza_ganado,
+        total_ganado,
+        rango1,
+        rango2,
+        rango3,
+      } = req.body;
 
-        next(error);
-    }
-    },
-
-
-consultarUno: async (req, res, next) => {
-  try {
-    const consulta = await model.Persona.findById(req.params.id);
-
-    if (!consulta) {
-      res.status(404).send({
-        message: "El registro con el id solicitado no existe",
+      const personas = new model.Persona({
+        nombre_animal,
+        raza_ganado,
+        total_ganado,
+        rango1,
+        rango2,
+        rango3,
       });
-    } else {
-      res.status(200).json(consulta);
+
+      const registro = await personas.save();
+      res.status(200).json(registro);
+      console.log(req.body);
+    } catch (e) {
+      res.status(500).send({
+        message: "Ocurrio un error al guardar los datos",
+      });
+
+      next(e);
     }
-  } catch (e) {
-    res.status(500).send({
-      message: "El id no existe",
-    });
-    next(e);
-  }
-} ,
+  },
 
-eliminar:async(req, res, next)=>{
+  consultar: async (req, res, next) => {
     try {
+      const personas = await model.Persona.find();
+      console.log(personas);
+      res.json(personas);
+    } catch (error) {
+      res.status(500).send({
+        message: "Ocurrio un error al consultar",
+      });
 
-      const eliminarPersona= await model.Persona.findByIdAndDelete(req.params.id);
+      next(error);
+    }
+  },
+
+  consultarUno: async (req, res, next) => {
+    try {
+      const consulta = await model.Persona.findById(req.params.id);
+
+      if (!consulta) {
+        res.status(404).send({
+          message: "El registro con el id solicitado no existe",
+        });
+      } else {
+        res.status(200).json(consulta);
+      }
+    } catch (e) {
+      res.status(500).send({
+        message: "El id no existe",
+      });
+      next(e);
+    }
+  },
+
+  eliminar: async (req, res, next) => {
+    try {
+      const eliminarPersona = await model.Persona.findByIdAndDelete(
+        req.params.id
+      );
       res.status(200).send({
-          message: "La informacion ha sido eliminada correctamente"
+        message: "La informacion ha sido eliminada correctamente",
       });
-        
     } catch (error) {
-        res.status(500).send({
-            message: "El id para eliminar persona no existe"
-        });
+      res.status(500).send({
+        message: "El id para eliminar persona no existe",
+      });
 
-        next(error);
+      next(error);
     }
-},
+  },
 
-Actualizar: async(req, res, next)=>{
+  Actualizar: async (req, res, next) => {
     try {
-        const {nombre_animal, total_ganado, raza_ganado, rango1, rango2, rango3}=req.body;
+      const {
+        nombre_animal,
+        raza_ganado,
+        total_ganado,
+        rango1,
+        rango2,
+        rango3,
+      } = req.body;
 
-        const actualizarPersona={
-            nombre_animal, total_ganado, raza_ganado, rango1, rango2, rango3
-        }
+      const actualizarPersona = {
+        nombre_animal,
+        raza_ganado,
+        total_ganado,
+        rango1,
+        rango2,
+        rango3,
+      };
 
-        const datosActuales = await model.Persona.findByIdAndUpdate(req.params.id, actualizarPersona);
-        res.json(actualizarPersona);
-
+      const datosActuales = await model.Persona.findByIdAndUpdate(
+        req.params.id,
+        actualizarPersona
+      );
+      res.json(actualizarPersona);
     } catch (error) {
-        res.status(500).send({
-            message:"Ocurrio un error al tratar de actualizar"
-        });
-        next(error);
+      res.status(500).send({
+        message: "Ocurrio un error al tratar de actualizar",
+      });
+      next(error);
     }
-}
+  },
 };
