@@ -1,6 +1,7 @@
-import model from '../models';
+import model from "../models";
 
 export default {
+
     agregar: async (req, res, next) => {
         try {
           const {
@@ -115,4 +116,6 @@ export default {
           next(error);
         }
       },
+
+  
 };
